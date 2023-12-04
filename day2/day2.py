@@ -1,24 +1,24 @@
 #!/bin/python
 import re
+from functools import reduce, partial
+from operator import mul
+
+def getCubes(color: str, line: str) -> int:
+    regex = r'(\d+) '
+    return max(map(int, re.findall(f'{regex}{color}', line)))
 
 def game_is_possible(line) -> int:
-    max_red, max_blue, max_green = 12, 14, 13
     y = line.split(': ')
     ID = int(re.findall(r'\d+', y[0])[0])
     x = y[1]
-    red = max(map(int, re.findall(r'(\d+) red', x)))
-    blue = max(map(int, re.findall(r'(\d+) blue', x)))
-    green = max(map(int, re.findall(r'(\d+) green', x)))
-    if red > max_red or blue > max_blue or green > max_green:
+    maximums = [('red', 12), ('green', 13), ('blue', 12)]
+    if any(getCubes(color, x) > m for color, m in maximums):
         return 0
     else:
         return ID
 
 def power(line) -> int:
-    red = max(map(int, re.findall(r'(\d+) red', line)))
-    blue = max(map(int, re.findall(r'(\d+) blue', line)))
-    green = max(map(int, re.findall(r'(\d+) green', line)))
-    return red * blue * green
+    return reduce(mul, map(partial(getCubes, line=line), ['red', 'blue', 'green']))
 
 with open('input') as f:
     lines = f.read().splitlines()
