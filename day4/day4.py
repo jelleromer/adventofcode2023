@@ -1,10 +1,10 @@
 #!/bin/python
 import re, math
-from typing import NamedTuple
+from typing import NamedTuple, List
 
 Card = NamedTuple('Card', [('index', int), ('wins', int)])
 
-def parseNums(s: str) -> list[int]:
+def parseNums(s: str) -> List[int]:
     return list(map(int, re.findall(r'\d+', s)))
 
 def getAmountOfWinningNums(line: str) -> int:
@@ -15,7 +15,7 @@ def cardToPoints(line: str) -> int:
     exponent = getAmountOfWinningNums(line) - 1
     return 0 if exponent == -1 else int(math.pow(2, exponent))
 
-def getAmountOfScratchcards(lines: list[str]):
+def getAmountOfScratchcards(lines: List[str]) -> int:
     cards = [Card(*x) for x in enumerate(map(getAmountOfWinningNums, lines))]
     amounts = [1] * len(cards)
     for card in cards:
