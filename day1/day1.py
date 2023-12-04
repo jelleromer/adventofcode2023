@@ -12,7 +12,8 @@ def wordToNum(s: str) -> int:
     try:
         return int(s)
     except ValueError:
-        return { 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9 }[s]
+        nums = { 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9 }
+        return nums[s]
 
 with open('input') as f:
     lines = f.read().splitlines()
