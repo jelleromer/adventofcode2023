@@ -20,7 +20,7 @@ def game_is_possible(line: str) -> int:
 def power(line: str) -> int:
     return reduce(mul, map(partial(getCubes, line=line), ['red', 'green', 'blue']))
 
-with open('input') as f:
+with open('input', 'r') as f:
     lines = f.read().splitlines()
     part1 = sum(map(game_is_possible, lines))
     part2 = sum(map(power, lines))
