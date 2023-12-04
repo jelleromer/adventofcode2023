@@ -71,7 +71,7 @@ def parttwo(lines: list[str]):
             res += reduce(mul, nums)
     return res
 
-with open('input') as f:
+with open('input', 'r') as f:
     lines = f.read().splitlines()
     part1 = partone(lines)
     part2 = parttwo(lines)
