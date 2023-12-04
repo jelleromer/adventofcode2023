@@ -24,7 +24,7 @@ def getAmountOfScratchcards(lines: list[str]):
             amounts[index] += amounts[card.index]
     return sum(amounts)
 
-with open('input') as f:
+with open('input', 'r') as f:
     lines = f.read().splitlines()
     part1 = sum(map(cardToPoints, lines))
     part2 = getAmountOfScratchcards(lines)
