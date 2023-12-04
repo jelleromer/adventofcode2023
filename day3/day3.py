@@ -1,7 +1,9 @@
 #!/bin/python
 import re
+from operator import mul
+from functools import reduce
 
-def findLocations(lines: list[str]) -> list[tuple[int, int, int, int]]:
+def findNumLocations(lines: list[str]) -> list[tuple[int, int, int, int]]:
     res = []
     for y, line in enumerate(lines):
         matches = re.finditer(r'\d+', line)
@@ -34,11 +36,7 @@ def isPartNumber(lines: list[str], y: int, x1: int, x2: int) -> bool:
     return False
 
 def partone(lines: list[str]):
-    res = 0
-    for loc in findLocations(lines):
-        if isPartNumber(lines, loc[0], loc[1], loc[2]):
-            res += loc[3]
-    return res
+    return sum(loc[3] for loc in findNumLocations(lines) if isPartNumber(lines, *loc[:3]))
 
 def findGearLocations(lines: list[str]) -> list[tuple[int, int]]:
     res = []
@@ -55,7 +53,7 @@ def isSurroundingGear(gearLoc: tuple[int, int], x: int, y: int) -> bool:
 def getSurroundingNumbers(lines: list[str], gearLoc: tuple[int, int]) -> list[int]:
     res = []
     _, y = gearLoc
-    linesToCheck = list(enumerate(lines))[y-1 if y != 0 else y : y+2 if y != len(lines)-1 else y+1]
+    linesToCheck = list(enumerate(lines))[y-1 if y!=0 else y : y+2 if y!=len(lines)-1 else y+1]
     for j, line in linesToCheck:
         matches = re.finditer(r'\d+', line)
         for match in matches:
@@ -70,12 +68,11 @@ def parttwo(lines: list[str]):
     for gearLoc in findGearLocations(lines):
         nums = getSurroundingNumbers(lines, gearLoc)
         if len(nums) == 2:
-            res += nums[0] * nums[1]
+            res += reduce(mul, nums)
     return res
 
 with open('input') as f:
     lines = f.read().splitlines()
-    x = isSurroundingGear((1, 3), 2, 4)
     part1 = partone(lines)
     part2 = parttwo(lines)
     print(part1, part2)
