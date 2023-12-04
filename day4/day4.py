@@ -4,19 +4,19 @@ from typing import NamedTuple
 
 Card = NamedTuple('Card', [('index', int), ('wins', int)])
 
-def parseNums(line: str) -> list[int]:
-    return list(map(int, re.findall(r'\d+', line)))
+def parseNums(s: str) -> list[int]:
+    return list(map(int, re.findall(r'\d+', s)))
 
-def getWinningNums(line: str) -> int:
+def getAmountOfWinningNums(line: str) -> int:
     winning, mine = map(parseNums, line.split(': ')[1].split('|'))
     return sum(int(n in mine) for n in winning)
 
 def cardToPoints(line: str) -> int:
-    exponent = getWinningNums(line) - 1
+    exponent = getAmountOfWinningNums(line) - 1
     return 0 if exponent == -1 else int(math.pow(2, exponent))
 
 def getAmountOfScratchcards(lines: list[str]):
-    cards = [Card(*x) for x in enumerate(map(getWinningNums, lines))]
+    cards = [Card(*x) for x in enumerate(map(getAmountOfWinningNums, lines))]
     amounts = [1] * len(cards)
     for card in cards:
         for i in range(card.wins):
