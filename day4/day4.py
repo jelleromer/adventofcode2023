@@ -1,5 +1,5 @@
 #!/bin/python
-import re, math
+import re
 from typing import NamedTuple, List
 
 Card = NamedTuple('Card', [('index', int), ('wins', int)])
@@ -13,7 +13,7 @@ def getAmountOfWinningNums(line: str) -> int:
 
 def cardToPoints(line: str) -> int:
     exponent = getAmountOfWinningNums(line) - 1
-    return 0 if exponent == -1 else int(math.pow(2, exponent))
+    return 0 if exponent == -1 else 2 ** exponent
 
 def getAmountOfScratchcards(lines: List[str]) -> int:
     cards = [Card(*x) for x in enumerate(map(getAmountOfWinningNums, lines))]
