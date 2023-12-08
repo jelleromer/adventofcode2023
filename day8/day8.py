@@ -1,6 +1,7 @@
 #!/bin/python
 import re, itertools
 from functools import reduce
+from typing import Callable
 
 def directionToInt(s: str) -> int:
     match s:
@@ -11,7 +12,11 @@ def directionToInt(s: str) -> int:
         case _:
             raise ValueError
 
-def getPathLength(startNode: str, goalCondition, indeces: list[int], network: dict[str, tuple[str, str]]) -> int:
+def getPathLength(startNode: str,
+                  goalCondition: Callable[[str], bool],
+                  indeces: list[int],
+                  network: dict[str, tuple[str, str]]
+                  ) -> int:
     indexGenerator = itertools.cycle(indeces)
     currentNode = startNode
     steps = 0
@@ -20,7 +25,7 @@ def getPathLength(startNode: str, goalCondition, indeces: list[int], network: di
         steps += 1
     return steps
 
-def partone(indeces, network) -> int:
+def partone(indeces: list[int], network: dict[str, tuple[str, str]]) -> int:
     return getPathLength('AAA', lambda x: x == 'ZZZ', indeces, network)
 
 def nodeEndsWithA(s: str) -> bool:
