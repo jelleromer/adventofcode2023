@@ -52,7 +52,7 @@ with open('input', 'r') as f:
     indeces = list(map(directionToInt, instructionsS))
     network = {}
     for line in lines:
-        x, y, z = list(re.findall(r'[A-Z]{3}', line))
+        x, y, z = re.findall(r'[A-Z]{3}', line)
         network[x] = (y, z)
     part1 = partone(indeces, network)
     part2 = parttwo(indeces, network)
