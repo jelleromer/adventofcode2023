@@ -1,5 +1,6 @@
 #!/bin/python
 import re
+from functools import reduce
 
 def parseNums(s: str) -> list[int]:
     return list(map(int, (re.findall(r'[-]?\d+', s))))
@@ -10,20 +11,17 @@ def getDifferences(ints: list[int]) -> list[int]:
 def listIsAllZeroes(ints: list[int]) -> bool:
     return all(i == 0 for i in ints)
 
+def generateHistory(ints: list[int]) -> list[list[int]]:
+    if listIsAllZeroes(ints):
+        return [ints]
+    return [ints] + generateHistory(getDifferences(ints))
+
 def findNextHistoryValue(ints: list[int]) -> int:
-    lists = [ints]
-    while not listIsAllZeroes(lists[-1]):
-        lists.append(getDifferences(lists[-1]))
-    return sum(x[-1] for x in reversed(lists))
+    return sum(h[-1] for h in reversed(generateHistory(ints)))
 
 def findPreviousHistoryValue(ints: list[int]) -> int:
-    lists = [ints]
-    while not listIsAllZeroes(lists[-1]):
-        lists.append(getDifferences(lists[-1]))
-    res = 0
-    for l in reversed(lists):
-        res = l[0] - res
-    return res
+    leftMosts = [h[0] for h in reversed(generateHistory(ints))]
+    return reduce(lambda x, y: y - x, leftMosts, 0)
 
 with open('input', 'r') as f:
     lines = list(map(parseNums, f.read().splitlines()))
